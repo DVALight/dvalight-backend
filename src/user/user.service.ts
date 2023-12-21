@@ -44,6 +44,8 @@ export class UserService {
       },
     });
 
+    if (!user) throw new ConflictException(`User with id: ${id} doesn't exist`);
+
     delete user.password;
     return user;
   }
