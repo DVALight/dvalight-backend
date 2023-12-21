@@ -39,10 +39,13 @@ export class UserService {
   }
 
   async findById(id: string) {
-    return await this.prisma.users.findUnique({
+    const user = await this.prisma.users.findUnique({
       where: {
         id: +id,
       },
     });
+
+    const { password, ...res } = user;
+    return res;
   }
 }
