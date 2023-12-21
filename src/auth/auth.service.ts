@@ -45,4 +45,25 @@ export class AuthService {
       throw new UnauthorizedException('Uncorect email or password');
     }
   }
+
+  async refreshToken(user: any) {
+    const payload = {
+      email: user.email,
+      sub: {
+        name: user.name,
+      },
+    };
+
+    return {
+      accesseToken: await this.jwtService.signAsync(payload, {
+        expiresIn: '1h',
+        secret: process.env.jwtSecretKey,
+      }),
+
+      refreshToken: await this.jwtService.signAsync(payload, {
+        expiresIn: '7d',
+        secret: process.env.jwtRefreshTokenKey,
+      }),
+    };
+  }
 }
