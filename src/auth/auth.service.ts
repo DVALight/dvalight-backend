@@ -12,6 +12,26 @@ export class AuthService {
   ) {}
   async login(dto: LoginDto) {
     const user = await this.validateUser(dto);
+    const payload = {
+      email: user.email,
+      sub: {
+        name: user.name,
+      },
+    };
+    return {
+      user,
+      tokens: {
+        accesseToken: await this.jwtService.signAsync(payload, {
+          expiresIn: '1h',
+          secret: process.env.jwtSecretKey,
+        }),
+
+        refreshToken: await this.jwtService.signAsync(payload, {
+          expiresIn: '7d',
+          secret: process.env.jwtRefreshTokenKey,
+        }),
+      },
+    };
   }
 
   async validateUser(dto: LoginDto) {
