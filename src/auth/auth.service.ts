@@ -38,9 +38,8 @@ export class AuthService {
     const user = await this.userService.findByEmail(dto.email);
 
     if (user && (await compare(dto.password, user.password))) {
-      const { password, ...res } = user;
-
-      return res;
+      delete user.password;
+      return user;
     } else {
       throw new UnauthorizedException('Uncorect email or password');
     }
