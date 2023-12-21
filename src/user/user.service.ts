@@ -45,7 +45,10 @@ export class UserService {
       },
     });
 
+    if (!user) throw new ConflictException(`User with id: ${id} doesn't exist`);
+
     const { password, ...res } = user;
+
     return res;
   }
 }
