@@ -16,13 +16,13 @@ export class DeviceService {
   }
 
   async getDevice(id: string) {
-    const device = this.find(id);
+    const device = await this.find(id);
 
     return device;
   }
 
   async toogleDevice(id: string) {
-    const device = this.find(id);
+    const device = await this.find(id);
 
     return await this.prisma.devices.update({
       where: {
