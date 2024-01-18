@@ -41,7 +41,7 @@ export class AuthService {
       delete user.password;
       return user;
     } else {
-      throw new UnauthorizedException('Uncorect email or password');
+      throw new UnauthorizedException('Uncorrect email or password');
     }
   }
 
