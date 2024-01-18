@@ -8,7 +8,7 @@ export class DeviceService {
 
   async findOrCreate(id: string) {
     let device = await this.prisma.devices.findUnique({
-      where: { id: +id },
+      where: { id: parseInt(id) },
     });
 
     if (!device) {
