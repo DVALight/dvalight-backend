@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
-  async find(id: string) {
+  async findOrCreate(id: string) {
     let device = await this.prisma.devices.findUnique({
       where: { id: +id },
     });
@@ -20,13 +20,13 @@ export class DeviceService {
   }
 
   async getDevice(id: string) {
-    const device = await this.find(id);
+    const device = await this.findOrCreate(id);
 
     return device;
   }
 
   async toogleDevice(id: string) {
-    const device = await this.find(id);
+    const device = await this.findOrCreate(id);
 
     return await this.prisma.devices.update({
       where: {
