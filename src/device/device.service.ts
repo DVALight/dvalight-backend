@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -6,11 +6,15 @@ export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
   async find(id: string) {
-    const device = await this.prisma.devices.findUnique({
+    let device = await this.prisma.devices.findUnique({
       where: { id: +id },
     });
 
-    if (!device) throw new ConflictException('Device not found');
+    if (!device) {
+      device = await this.prisma.devices.create({
+        data: { id: +id, state: false },
+      });
+    }
 
     return device;
   }
