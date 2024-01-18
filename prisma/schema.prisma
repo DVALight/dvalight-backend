@@ -1,5 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+// yarn prisma migrate dev
 
 generator client {
   provider = "prisma-client-js"
@@ -17,4 +18,11 @@ model Users {
   password String
 
   @@map("users")
+}
+
+model Devices {
+  id  Int @id @default(autoincrement())
+  state Boolean
+
+  @@map("devices")
 }

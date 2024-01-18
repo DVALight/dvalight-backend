@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { DeviceController } from './device.controller';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
-  controllers: [],
+  controllers: [DeviceController],
   providers: [PrismaService],
 })
 export class DeviceModule {}
