@@ -1,6 +1,9 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
-export class DVARequestDTO {
+export class CreateDeviceDto {
+  @IsString()
+  id: string;
+
   @IsNumber()
-  deviceId: number;
+  color: number;
 }
