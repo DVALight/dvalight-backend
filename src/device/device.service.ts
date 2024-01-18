@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDeviceDto } from './dto/device.dto';
 
@@ -6,22 +6,28 @@ import { CreateDeviceDto } from './dto/device.dto';
 export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
-  async find(id: string) {
-    const device = await this.prisma.devices.findUnique({
+  async findOrCreate(id: string) {
+    let device = await this.prisma.devices.findUnique({
       where: { id: +id },
     });
-    if (!device) throw new ConflictException('Device not found');
+
+    if (!device) {
+      device = await this.prisma.devices.create({
+        data: { id: +id, state: false },
+      });
+    }
+
     return device;
   }
 
   async getDevice(id: string) {
-    const device = await this.find(id);
+    const device = await this.findOrCreate(id);
 
     return device;
   }
 
   async toogleDevice(id: string) {
-    const device = await this.find(id);
+    const device = await this.findOrCreate(id);
 
     return await this.prisma.devices.update({
       where: {
@@ -34,7 +40,7 @@ export class DeviceService {
   }
 
   async changeColor(dto: CreateDeviceDto) {
-    const device = await this.find(dto.id);
+    const device = await this.findOrCreate(dto.id);
 
     return await this.prisma.devices.update({
       where: {
