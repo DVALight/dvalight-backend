@@ -5,7 +5,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
-  async getDevice(id: string) {
+  async find(id: string) {
     const device = await this.prisma.devices.findUnique({
       where: { id: +id },
     });
@@ -13,5 +13,24 @@ export class DeviceService {
     if (!device) throw new ConflictException('Device not found');
 
     return device;
+  }
+
+  async getDevice(id: string) {
+    const device = this.find(id);
+
+    return device;
+  }
+
+  async toogleDevice(id: string) {
+    const device = this.find(id);
+
+    return await this.prisma.devices.update({
+      where: {
+        id: (await device).id,
+      },
+      data: {
+        state: !(await device).state,
+      },
+    });
   }
 }
