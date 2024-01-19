@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { DeviceService } from './device.service';
 import { CreateDeviceDto } from './dto/device.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
@@ -13,13 +13,13 @@ export class DeviceController {
   }
 
   @UseGuards(JwtGuard)
-  @Post('toogle/:id')
+  @Patch('toogle/:id')
   async toogleDevice(@Param('id') id: string) {
     return await this.deviceService.toogleDevice(id);
   }
 
   @UseGuards(JwtGuard)
-  @Post('color')
+  @Patch('color')
   async changeColor(@Body() dto: CreateDeviceDto) {
     return await this.deviceService.changeColor(dto);
   }
