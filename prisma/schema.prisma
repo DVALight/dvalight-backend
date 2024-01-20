@@ -22,9 +22,8 @@ model Users {
 
 model Devices {
   id  Int @id @default(autoincrement())
-  state Boolean
+  state Boolean @default(false)
   color Int @default(16777215)
-
 
   @@map("devices")
 }
