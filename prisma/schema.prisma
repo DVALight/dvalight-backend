@@ -17,6 +17,8 @@ model User {
   name        String?
   password    String
 
+  devices     Device[]
+
   @@map("users")
 }
 
@@ -24,6 +26,9 @@ model Device {
   id          Int @id @default(autoincrement())
   state       Boolean @default(false)
   color       Int @default(16777215)
+
+  owner       User @relation(fields: [ownerId], references: [id])
+  ownerId     Int
 
   @@map("devices")
 }
