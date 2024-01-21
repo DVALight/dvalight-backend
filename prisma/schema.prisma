@@ -11,7 +11,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   id  Int @id @default(autoincrement())
   email String @unique
   name String?
@@ -20,7 +20,7 @@ model Users {
   @@map("users")
 }
 
-model Devices {
+model Device {
   id  Int @id @default(autoincrement())
   state Boolean @default(false)
   color Int @default(16777215)

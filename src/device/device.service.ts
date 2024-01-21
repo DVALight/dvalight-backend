@@ -7,12 +7,12 @@ export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
   async findOrCreate(id: string) {
-    let device = await this.prisma.devices.findUnique({
+    let device = await this.prisma.device.findUnique({
       where: { id: parseInt(id) },
     });
 
     if (!device) {
-      device = await this.prisma.devices.create({
+      device = await this.prisma.device.create({
         data: { id: +id, state: false },
       });
     }
@@ -29,7 +29,7 @@ export class DeviceService {
   async putDevice(id: string, dto: CreateDeviceDto) {
     const device = await this.findOrCreate(id);
 
-    return await this.prisma.devices.update({
+    return await this.prisma.device.update({
       where: { id: device.id },
       data: { state: dto.state, color: dto.color },
     });
@@ -38,7 +38,7 @@ export class DeviceService {
   async toggleDevice(id: string) {
     const device = await this.findOrCreate(id);
 
-    return await this.prisma.devices.update({
+    return await this.prisma.device.update({
       where: { id: device.id },
       data: { state: !device.state },
     });
@@ -47,7 +47,7 @@ export class DeviceService {
   async changeColor(dto: UpdateDeviceDto) {
     const device = await this.findOrCreate(dto.id);
 
-    return await this.prisma.devices.update({
+    return await this.prisma.device.update({
       where: { id: device.id },
       data: { color: dto.color },
     });
