@@ -39,12 +39,8 @@ export class DeviceService {
     const device = await this.findOrCreate(id);
 
     return await this.prisma.devices.update({
-      where: {
-        id: (await device).id,
-      },
-      data: {
-        state: !(await device).state,
-      },
+      where: { id: device.id },
+      data: { state: !device.state },
     });
   }
 
@@ -52,12 +48,8 @@ export class DeviceService {
     const device = await this.findOrCreate(dto.id);
 
     return await this.prisma.devices.update({
-      where: {
-        id: (await device).id,
-      },
-      data: {
-        color: dto.color,
-      },
+      where: { id: device.id },
+      data: { color: dto.color },
     });
   }
 }
