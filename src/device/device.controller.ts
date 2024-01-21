@@ -13,9 +13,9 @@ export class DeviceController {
   }
 
   @UseGuards(JwtGuard)
-  @Patch('toogle/:id')
+  @Patch('toggle/:id')
   async toogleDevice(@Param('id') id: string) {
-    return await this.deviceService.toogleDevice(id);
+    return await this.deviceService.toggleDevice(id);
   }
 
   @UseGuards(JwtGuard)

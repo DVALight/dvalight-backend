@@ -26,7 +26,7 @@ export class DeviceService {
     return device;
   }
 
-  async toogleDevice(id: string) {
+  async toggleDevice(id: string) {
     const device = await this.findOrCreate(id);
 
     return await this.prisma.devices.update({
