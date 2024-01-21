@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Request,
   Param,
   Get,
   Put,
+  Post,
   Patch,
   UseGuards,
 } from '@nestjs/common';
@@ -18,6 +20,12 @@ export class DeviceController {
   @Get(':id')
   async getDevice(@Param('id') id: string) {
     return await this.deviceService.getDevice(id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Post()
+  async createDevice(@Request() req) {
+    console.log(req);
   }
 
   @UseGuards(JwtGuard)

@@ -6,28 +6,31 @@ import { CreateDeviceDto, UpdateDeviceDto } from './dto/device.dto';
 export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
-  async findOrCreate(id: string) {
-    let device = await this.prisma.device.findUnique({
+  async find(id: string) {
+    const device = await this.prisma.device.findUnique({
       where: { id: parseInt(id) },
     });
 
-    if (!device) {
-      device = await this.prisma.device.create({
-        data: { id: +id, state: false },
-      });
-    }
+    // if (!device) {
+    //   device = await this.prisma.device.create({
+    //     data: {
+    //       state: false,
+    //       owner: { connect: { id: 2 } },
+    //     },
+    //   });
+    // }
 
     return device;
   }
 
   async getDevice(id: string) {
-    const device = await this.findOrCreate(id);
+    const device = await this.find(id);
 
     return device;
   }
 
   async putDevice(id: string, dto: CreateDeviceDto) {
-    const device = await this.findOrCreate(id);
+    const device = await this.find(id);
 
     return await this.prisma.device.update({
       where: { id: device.id },
@@ -36,7 +39,7 @@ export class DeviceService {
   }
 
   async toggleDevice(id: string) {
-    const device = await this.findOrCreate(id);
+    const device = await this.find(id);
 
     return await this.prisma.device.update({
       where: { id: device.id },
@@ -45,7 +48,7 @@ export class DeviceService {
   }
 
   async changeColor(dto: UpdateDeviceDto) {
-    const device = await this.findOrCreate(dto.id);
+    const device = await this.find(dto.id);
 
     return await this.prisma.device.update({
       where: { id: device.id },
