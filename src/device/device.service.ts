@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateDeviceDto } from './dto/device.dto';
+import { CreateDeviceDto, UpdateDeviceDto } from './dto/device.dto';
 
 @Injectable()
 export class DeviceService {
@@ -26,6 +26,15 @@ export class DeviceService {
     return device;
   }
 
+  async putDevice(id: string, dto: CreateDeviceDto) {
+    const device = await this.findOrCreate(id);
+
+    return await this.prisma.devices.update({
+      where: { id: device.id },
+      data: { state: dto.state, color: dto.color },
+    });
+  }
+
   async toggleDevice(id: string) {
     const device = await this.findOrCreate(id);
 
@@ -39,7 +48,7 @@ export class DeviceService {
     });
   }
 
-  async changeColor(dto: CreateDeviceDto) {
+  async changeColor(dto: UpdateDeviceDto) {
     const device = await this.findOrCreate(dto.id);
 
     return await this.prisma.devices.update({
