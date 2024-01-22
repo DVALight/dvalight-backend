@@ -15,6 +15,7 @@ export class DeviceService {
   }
 
   async createDevice(user: any, dto: CreateDeviceDto) {
+    console.log(user);
     return await this.prisma.device.create({
       data: {
         state: dto.state,

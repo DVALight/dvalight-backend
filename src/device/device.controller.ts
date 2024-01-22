@@ -25,7 +25,7 @@ export class DeviceController {
   @UseGuards(JwtGuard)
   @Post()
   async createDevice(@Request() req, @Body() dto: CreateDeviceDto) {
-    return await this.deviceService.createDevice(req, dto);
+    return await this.deviceService.createDevice(req.user, dto);
   }
 
   @UseGuards(JwtGuard)
