@@ -1,4 +1,4 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber } from 'class-validator';
 
 export class CreateDeviceDto {
   @IsBoolean()
@@ -8,10 +8,7 @@ export class CreateDeviceDto {
   color: number;
 }
 
-export class UpdateDeviceDto {
-  @IsString()
-  id: string;
-
+export class UpdateDeviceColorDto {
   @IsNumber()
   color: number;
 }

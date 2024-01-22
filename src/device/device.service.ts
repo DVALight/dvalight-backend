@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateDeviceDto, UpdateDeviceDto } from './dto/device.dto';
+import { CreateDeviceDto, UpdateDeviceColorDto } from './dto/device.dto';
 
 @Injectable()
 export class DeviceService {
@@ -61,8 +61,8 @@ export class DeviceService {
     });
   }
 
-  async changeColor(user: any, dto: UpdateDeviceDto) {
-    const device = await this.find(user, dto.id);
+  async updateColor(user: any, id: string, dto: UpdateDeviceColorDto) {
+    const device = await this.find(user, id);
 
     return await this.prisma.device.update({
       where: { id: device.id },

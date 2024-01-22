@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { DeviceService } from './device.service';
-import { CreateDeviceDto, UpdateDeviceDto } from './dto/device.dto';
+import { CreateDeviceDto, UpdateDeviceColorDto } from './dto/device.dto';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('device')
@@ -39,14 +39,18 @@ export class DeviceController {
   }
 
   @UseGuards(JwtGuard)
-  @Patch('toggle/:id')
+  @Patch(':id/toggle')
   async toggleDevice(@Request() req, @Param('id') id: string) {
     return await this.deviceService.toggleDevice(req.user, id);
   }
 
   @UseGuards(JwtGuard)
-  @Patch('color')
-  async changeColor(@Request() req, @Body() dto: UpdateDeviceDto) {
-    return await this.deviceService.changeColor(req.user, dto);
+  @Patch(':id/color')
+  async changeColor(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() dto: UpdateDeviceColorDto,
+  ) {
+    return await this.deviceService.updateColor(req.user, id, dto);
   }
 }
