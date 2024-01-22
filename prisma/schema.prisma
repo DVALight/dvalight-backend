@@ -3,27 +3,32 @@
 // yarn prisma migrate dev
 
 generator client {
-  provider = "prisma-client-js"
+  provider    = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider    = "postgresql"
+  url         = env("DATABASE_URL")
 }
 
 model User {
-  id  Int @id @default(autoincrement())
-  email String @unique
-  name String?
-  password String
+  id          Int @id @default(autoincrement())
+  email       String @unique
+  name        String?
+  password    String
+
+  devices     Device[]
 
   @@map("users")
 }
 
 model Device {
-  id  Int @id @default(autoincrement())
-  state Boolean @default(false)
-  color Int @default(16777215)
+  id          Int @id @default(autoincrement())
+  state       Boolean @default(false)
+  color       Int @default(16777215)
+
+  owner       User @relation(fields: [ownerId], references: [id])
+  ownerId     Int
 
   @@map("devices")
 }
