@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateDeviceDto, UpdateDeviceDto } from './dto/device.dto';
 
@@ -6,13 +10,17 @@ import { CreateDeviceDto, UpdateDeviceDto } from './dto/device.dto';
 export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
-  async find(id: string) {
+  async find(user: any, id: string) {
     const device = await this.prisma.device.findUnique({
       where: { id: parseInt(id) },
     });
 
     if (!device) {
       throw new NotFoundException();
+    }
+
+    if (device.ownerId !== user.id) {
+      throw new ForbiddenException();
     }
 
     return device;
@@ -29,14 +37,14 @@ export class DeviceService {
     });
   }
 
-  async getDevice(id: string) {
-    const device = await this.find(id);
+  async getDevice(req: any, id: string) {
+    const device = await this.find(req.user, id);
 
     return device;
   }
 
-  async putDevice(id: string, dto: CreateDeviceDto) {
-    const device = await this.find(id);
+  async putDevice(user: any, id: string, dto: CreateDeviceDto) {
+    const device = await this.find(user, id);
 
     return await this.prisma.device.update({
       where: { id: device.id },
@@ -44,8 +52,8 @@ export class DeviceService {
     });
   }
 
-  async toggleDevice(id: string) {
-    const device = await this.find(id);
+  async toggleDevice(user: any, id: string) {
+    const device = await this.find(user, id);
 
     return await this.prisma.device.update({
       where: { id: device.id },
@@ -53,8 +61,8 @@ export class DeviceService {
     });
   }
 
-  async changeColor(dto: UpdateDeviceDto) {
-    const device = await this.find(dto.id);
+  async changeColor(user: any, dto: UpdateDeviceDto) {
+    const device = await this.find(user, dto.id);
 
     return await this.prisma.device.update({
       where: { id: device.id },

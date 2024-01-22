@@ -17,32 +17,36 @@ import { JwtGuard } from 'src/auth/guards/jwt.guard';
 export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}
 
-  @Get(':id')
-  async getDevice(@Param('id') id: string) {
-    return await this.deviceService.getDevice(id);
-  }
-
   @UseGuards(JwtGuard)
   @Post()
   async createDevice(@Request() req, @Body() dto: CreateDeviceDto) {
     return await this.deviceService.createDevice(req.user, dto);
   }
 
+  @Get(':id')
+  async getDevice(@Request() req, @Param('id') id: string) {
+    return await this.deviceService.getDevice(req, id);
+  }
+
   @UseGuards(JwtGuard)
   @Put(':id')
-  async putDevice(@Param('id') id: string, @Body() dto: CreateDeviceDto) {
-    return await this.deviceService.putDevice(id, dto);
+  async putDevice(
+    @Request() req,
+    @Param('id') id: string,
+    @Body() dto: CreateDeviceDto,
+  ) {
+    return await this.deviceService.putDevice(req.user, id, dto);
   }
 
   @UseGuards(JwtGuard)
   @Patch('toggle/:id')
-  async toggleDevice(@Param('id') id: string) {
-    return await this.deviceService.toggleDevice(id);
+  async toggleDevice(@Request() req, @Param('id') id: string) {
+    return await this.deviceService.toggleDevice(req.user, id);
   }
 
   @UseGuards(JwtGuard)
   @Patch('color')
-  async changeColor(@Body() dto: UpdateDeviceDto) {
-    return await this.deviceService.changeColor(dto);
+  async changeColor(@Request() req, @Body() dto: UpdateDeviceDto) {
+    return await this.deviceService.changeColor(req.user, dto);
   }
 }
