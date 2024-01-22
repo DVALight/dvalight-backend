@@ -49,8 +49,10 @@ export class DeviceService {
     });
   }
 
-  async getDevice(req: any, id: string) {
-    const device = await this.find(req.user, id);
+  async getDevice(id: string) {
+    const device = await this.prisma.device.findUnique({
+      where: { id: parseInt(id) },
+    });
 
     return device;
   }
