@@ -11,16 +11,17 @@ export class DeviceService {
       where: { id: parseInt(id) },
     });
 
-    // if (!device) {
-    //   device = await this.prisma.device.create({
-    //     data: {
-    //       state: false,
-    //       owner: { connect: { id: 2 } },
-    //     },
-    //   });
-    // }
-
     return device;
+  }
+
+  async createDevice(user: any, dto: CreateDeviceDto) {
+    return await this.prisma.device.create({
+      data: {
+        state: dto.state,
+        color: dto.color,
+        owner: { connect: { id: user.id } },
+      },
+    });
   }
 
   async getDevice(id: string) {
