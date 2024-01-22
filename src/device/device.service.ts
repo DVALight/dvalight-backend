@@ -14,7 +14,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class DeviceService {
   constructor(private prisma: PrismaService) {}
 
-  async find(user: any, id: string) {
+  private async find(user: any, id: string) {
     const device = await this.prisma.device.findUnique({
       where: { id: parseInt(id) },
     });
@@ -28,6 +28,14 @@ export class DeviceService {
     }
 
     return device;
+  }
+
+  async findAllOwnerDevices(ownerId: number) {
+    return await this.prisma.device.findMany({
+      where: {
+        owner: { is: { id: ownerId } },
+      },
+    });
   }
 
   async createDevice(user: any, dto: CreateDeviceDto) {
